@@ -3,7 +3,8 @@ const router = express.Router();
 const sheetsController = require('../controllers/sheets');
 
 
-router.get('/download', sheetsController.downloadPDF); // Use the correct function name
-router.get('/testgetdata', sheetsController.getSheetData); // Use the correct function name
+router.get('/download', sheetsController.downloadPDF);
+router.get('/testgetdata', sheetsController.getSheetData); 
+router.post('/setdata', sheetsController.setSheetData);
 
 module.exports = router;
