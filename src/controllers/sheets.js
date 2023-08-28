@@ -123,7 +123,10 @@ const setSheetData = async (req, res) => {
         console.log(error);
         res.status(500).json(error);
     }
-    res.json("hehe");
+    data = {
+        "message":"Invoice generated successfully."
+        };
+        res.status(201).json(data)
 };
 
 module.exports = { downloadPDF, getSheetData, setSheetData };
