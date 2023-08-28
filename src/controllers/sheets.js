@@ -59,6 +59,7 @@ const setSheetData = async (req, res) => {
             }
         }
 
+        // Entering the date and invoice number
         await sheets.spreadsheets.values.update({
             spreadsheetId: sheetId,
             range: sheetName+"!H5:J6",
@@ -71,6 +72,7 @@ const setSheetData = async (req, res) => {
             },
         });
 
+        // Entering the billing address
         await sheets.spreadsheets.values.update({
             spreadsheetId: sheetId,
             range: sheetName+"!A10:E12",
@@ -82,6 +84,7 @@ const setSheetData = async (req, res) => {
             },
         });
 
+        // Entering the shipping address
         await sheets.spreadsheets.values.update({
             spreadsheetId: sheetId,
             range: sheetName+"!F10:J12",
@@ -93,6 +96,7 @@ const setSheetData = async (req, res) => {
             },
         });
 
+        // Entering the products details
         await sheets.spreadsheets.values.update({
             spreadsheetId: sheetId,
             range: sheetName+"!A14:J28",
@@ -102,6 +106,7 @@ const setSheetData = async (req, res) => {
             },
         });
 
+        // Entering the grand total
         await sheets.spreadsheets.values.update({
             spreadsheetId: sheetId,
             range: sheetName+"!D35:J35",
