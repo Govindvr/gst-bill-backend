@@ -5,6 +5,18 @@ require('dotenv').config();
 const sheetId = process.env.SPREADSHEET_ID;
 const sheetName = "Sheet1";
 
+const testServer = async (req, res) => {
+    try {
+        data = {
+            "status": "success",
+        };
+        res.json(data);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    }
+}
+
 const downloadPDF = async (req, res) => {
     try {
         console.log('downLoadPDF');
@@ -136,4 +148,4 @@ const setSheetData = async (req, res) => {
         res.status(201).json(data)
 };
 
-module.exports = { downloadPDF, getSheetData, setSheetData };
+module.exports = { downloadPDF, getSheetData, setSheetData, testServer };
