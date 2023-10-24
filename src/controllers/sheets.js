@@ -106,14 +106,21 @@ const setSheetData = async (req, res) => {
             },
         });
 
-        // Entering the grand total
+        // Get grand total
+        let grandTotal = await sheets.spreadsheets.values.get({
+            spreadsheetId: sheetId,
+            range: sheetName+"!I34:J34",
+        });
+        grandTotal = parseInt(grandTotal.data.values[0][0].slice(1).replace(',',''));
+
+        // Entering the grand total words
         await sheets.spreadsheets.values.update({
             spreadsheetId: sheetId,
             range: sheetName+"!D35:J35",
             valueInputOption: "USER_ENTERED",
             resource: {
                 values:[
-                    [`${numInWords(req.body.bill.grand_total)}`]
+                    [`${numInWords(grandTotal)}`]
                 ],
             },
         });
