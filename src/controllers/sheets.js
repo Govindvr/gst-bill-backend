@@ -107,7 +107,6 @@ const setSheetData = async (req, res) => {
                 ],
             },
         });
-
         // Entering the products details
         await sheets.spreadsheets.values.update({
             spreadsheetId: sheetId,
@@ -117,7 +116,21 @@ const setSheetData = async (req, res) => {
                 values: products,
             },
         });
-
+         //Entering the cgst,sgst and igst
+         await sheets.spreadsheets.values.update({
+            spreadsheetId: sheetId,
+            range: sheetName+"!I29:J32",
+            valueInputOption: "USER_ENTERED",
+            resource: {
+                values:[
+                    [`${req.body.bill.total}`],
+                    [`${req.body.bill.cgst}`],
+                    [`${req.body.bill.sgst}`],
+                    [`${req.body.bill.igst}`],
+                ],
+            },
+        });
+         
         // Get grand total
         let grandTotal = await sheets.spreadsheets.values.get({
             spreadsheetId: sheetId,
@@ -136,8 +149,7 @@ const setSheetData = async (req, res) => {
                 ],
             },
         });
-
-        
+ 
     } catch (error) {
         console.log(error);
         res.status(500).json(error);
