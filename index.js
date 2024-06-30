@@ -1,6 +1,8 @@
 const express = require('express');
 const sheetRoutes = require('./src/routes/sheets');
 const productRoutes = require('./stock-maintenance-app/routes/products');
+const transactionRoutes = require('./stock-maintenance-app/routes/transaction');
+
 const cors = require('cors');
 require('dotenv').config();
 
@@ -11,6 +13,7 @@ app.use(express.json());
 app.use(cors());
 app.use('/api/sheets', sheetRoutes);
 app.use('/api/stock/products', productRoutes);
+app.use('/api/stock/transaction', transactionRoutes);
 
 app.use((err,req,res,next)=>{ 
   const errorStatus = err.status|| 500;

@@ -23,9 +23,20 @@ const getProducts = async (data) => {
             'SELECT * FROM PRODUCTS ORDER BY CATEGORY;');
         return rows;
     } catch(err) {
+        console.error(err);
+        throw new Error('Database Error');
+    }
+}
+
+const getProduct = async (id) => {
+    try {
+        const {rows} = await db.query(
+            'SELECT * FROM PRODUCTS WHERE product_id=$1;',[id]);
+        return rows;
+    } catch(err) {
         console.log(err);
         next(createError(500,"Database Error"));
     }
 }
 
-module.exports = {addProduct, getProducts};
+module.exports = {addProduct, getProducts, getProduct};
