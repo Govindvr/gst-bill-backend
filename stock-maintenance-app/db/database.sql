@@ -3,7 +3,6 @@ CREATE TABLE Products (
     code VARCHAR(10) NOT NULL UNIQUE,
     name VARCHAR(60) NOT NULL,
     category VARCHAR(30) NOT NULL,
-    price DECIMAL(10, 2),
     current_stock INT NOT NULL
 );
 
