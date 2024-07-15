@@ -16,6 +16,7 @@
     "dotenv": "^16.3.1",
     "express": "^4.19.2",
     "googleapis": "^95.0.0",
+    "jsonwebtoken": "^9.0.2",
     "nodemon": "^3.0.1",
     "pg": "^8.12.0"
   }
