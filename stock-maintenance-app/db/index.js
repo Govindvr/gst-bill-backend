@@ -8,10 +8,10 @@ const pool = new Pool({
   host: process.env.PGHOST,
   port: process.env.PGPORT || 5432, // Default to 5432 if PGPORT is not set
   database: process.env.PGDATABASE,
-  ssl: {
-    rejectUnauthorized: false // Adjust as per your SSL requirements
-  },
-  options: `project=${process.env.ENDPOINT_ID}`,
+  // ssl: {
+  //   rejectUnauthorized: false // Adjust as per your SSL requirements
+  // },
+  // options: `project=${process.env.ENDPOINT_ID}`,
 });
 
 async function getPgVersion() {

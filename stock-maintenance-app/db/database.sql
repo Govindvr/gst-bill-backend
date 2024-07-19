@@ -12,6 +12,9 @@ CREATE TABLE Transactions (
     transaction_type VARCHAR(4) NOT NULL CHECK (transaction_type IN ('ADD', 'SELL', 'LOST')),
     quantity INT NOT NULL,
     transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    b1 INT NOT NULL,
+    b2 INT NOT NULL,
+    b3 INT NOT NULL,
     balance_stock INT NOT NULL,
     FOREIGN KEY (product_id) REFERENCES Products(product_id)
 );
