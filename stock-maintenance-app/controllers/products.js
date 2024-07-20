@@ -54,4 +54,15 @@ const deleteProduct = async(req,res,next) => {
     }
 }
 
-module.exports = {getProducts, addProduct, updateProduct, deleteProduct};
+const listProducts = async(req,res,next) => {
+    try{
+        data = await db.listProducts();
+        res.status(200).json(createSucess(200,"Result Fetched",data));
+    }
+    catch(err){
+        console.log("error");
+        next(createError(500,"server error"));
+    }
+}
+
+module.exports = {getProducts, addProduct, updateProduct, deleteProduct, listProducts};

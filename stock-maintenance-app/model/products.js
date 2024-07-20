@@ -43,4 +43,16 @@ const getProduct = async (id) => {
   }
 };
 
-module.exports = { addProduct, getProducts, getProduct };
+const listProducts = async (data) => {
+  try {
+    const { rows } = await db.query(
+      "SELECT product_id,name FROM PRODUCTS ORDER BY product_id,CATEGORY;"
+    );
+    return rows;
+  } catch (err) {
+    console.error(err);
+    throw new Error("Database Error");
+  }
+};
+
+module.exports = { addProduct, getProducts, getProduct,listProducts };
