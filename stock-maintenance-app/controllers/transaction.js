@@ -138,4 +138,21 @@ const getBalance = async (req, res, next) => {
     next(createError(500, "server error"));
   }
 };
-module.exports = { addStock, viewProductStock, viewReport, getBalance };
+
+const deleteTransaction = async (req, res, next) => {
+  try {
+    await db.deleteTransaction(req.body);
+    res.status(202).json(createSucess(202, "Data Deleted Sucessfully"));
+  } catch (error) {
+    console.log("error");
+    next(createError(500, "server error"));
+  }
+};
+
+module.exports = {
+  addStock,
+  viewProductStock,
+  viewReport,
+  getBalance,
+  deleteTransaction,
+};

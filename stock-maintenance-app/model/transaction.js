@@ -21,7 +21,16 @@ const addTransaction = async (id, new_stock, type, quantity, balance) => {
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
     RETURNING transaction_type, quantity;
     `;
-    const values = [id, type, quantity, currentDate, new_stock, balance.b1, balance.b2, balance.b3]; // Ensure this array has exactly 5 elements
+    const values = [
+      id,
+      type,
+      quantity,
+      currentDate,
+      new_stock,
+      balance.b1,
+      balance.b2,
+      balance.b3,
+    ]; // Ensure this array has exactly 5 elements
     const transaction = await client.query(query, values);
     await client.query("COMMIT");
     result = {
@@ -80,4 +89,61 @@ const getBatchBalance = async (id) => {
   }
 };
 
-module.exports = { addTransaction, productReport, getReport, getBatchBalance };
+const deleteTransaction = async (body) => {
+  const client = await db.pool.connect();
+  try {
+    const { product_id, startDate, endDate } = body;
+    const formattedStartDate = `${startDate} 00:00:00`;
+    const formattedEndDate = `${endDate} 23:59:59`;
+    await client.query("BEGIN");
+
+    await client.query(
+      `DELETE FROM Transactions
+       WHERE product_id = $1 AND transaction_date BETWEEN $2 AND $3`,
+      [product_id, formattedStartDate, formattedEndDate]
+    );
+
+    const result = await client.query(
+      `SELECT balance_stock, b1, b2, b3
+       FROM Transactions
+       WHERE product_id = $1
+       ORDER BY transaction_date DESC
+       LIMIT 1`,
+      [product_id]
+    );
+
+    if (result.rows.length > 0) {
+      const { balance_stock, b1, b2, b3 } = result.rows[0];
+
+      // Update the product balance
+      await client.query(
+        `UPDATE Products
+         SET current_stock = $1
+         WHERE product_id = $2`,
+        [balance_stock, product_id]
+      );
+    } else {
+      // If no transactions are left, set the stock and batches to 0
+      await client.query(
+        `UPDATE Products
+         SET current_stock = 0
+         WHERE product_id = $1`,
+        [product_id]
+      );
+    }
+    await client.query("COMMIT");
+  } catch (error) {
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
+  }
+};
+
+module.exports = {
+  addTransaction,
+  productReport,
+  getReport,
+  getBatchBalance,
+  deleteTransaction,
+};
