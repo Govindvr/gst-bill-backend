@@ -10,6 +10,10 @@ const addStock = async (req, res, next) => {
     const type = req.body.transaction_type;
     const batch = req.body.batch;
     let new_stocks = 0;
+    if(quantity===0){
+      next(createError(500, "Invalid Transaction Quantity is 0"));
+      throw new Error("Invalid Transaction Quantity is 0");
+    }
 
     let balance = await db.getBatchBalance(id);
     if (!balance) {
