@@ -107,6 +107,8 @@ async function buildInvoiceHtml(bill, billItems, supplierConfig) {
 }
 
 async function renderPdfBuffer(html) {
+  process.env.PUPPETEER_CACHE_DIR =
+    process.env.PUPPETEER_CACHE_DIR || path.join(process.cwd(), '.cache', 'puppeteer');
   const {default: puppeteer} = await import('puppeteer');
   const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
   try {
