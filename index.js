@@ -2,6 +2,7 @@ const express = require("express");
 const sheetRoutes = require("./src/routes/sheets");
 const productRoutes = require("./stock-maintenance-app/routes/products");
 const transactionRoutes = require("./stock-maintenance-app/routes/transaction");
+const ocbInvoiceRoutes = require("./src/routes/ocb-invoice");
 const auth = require("./stock-maintenance-app/routes/auth");
 
 const cors = require("cors");
@@ -14,6 +15,7 @@ app.use(cors());
 app.use("/api/sheets", sheetRoutes);
 app.use("/api/stock/products", productRoutes);
 app.use("/api/stock/transaction", transactionRoutes);
+app.use("/api/ocb/invoice", ocbInvoiceRoutes);
 app.use("/auth", auth);
 
 app.use((err, req, res, next) => {
