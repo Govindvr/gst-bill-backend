@@ -8,17 +8,23 @@
       * {
         box-sizing: border-box;
       }
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
       body {
         font-family: Arial, sans-serif;
         font-size: 11px;
         line-height: 1.3;
         color: #000;
         margin: 0;
-        padding: 20px;
+        /* 45px left padding provides punch-hole clearance */
+        padding: 35px 40px 20px 40px;
       }
       .invoice-container {
-        max-width: 800px;
-        margin: auto;
+        width: 100%;
+        max-width: 710px;
+        margin: 0 auto;
         border: 1px solid #000;
       }
 
@@ -96,14 +102,9 @@
         height: 100%;
         object-fit: contain;
       }
-      .logo-text {
-        font-family: 'Brush Script MT', cursive, sans-serif;
-        font-size: 15px;
-        font-weight: bold;
-      }
 
-      /* Added table-layout: fixed to enforce column widths regardless of placeholder text length */
-      .items-table {
+      /* Fixed layouts to strictly enforce column widths and prevent misalignment */
+      .items-table, .totals-table {
         table-layout: fixed;
       }
       .items-table th {
@@ -114,7 +115,7 @@
         word-wrap: break-word;
       }
 
-      /* Preserved EXACTLY from gst_invoice.html */
+      /* Spacer Row expands the middle section vertically */
       .spacer-row td {
         height: 350px;
         border-bottom: 1px solid #000;
@@ -130,17 +131,17 @@
       <table>
         <tr>
           <td
-            rowspan="2"
+            rowspan="6"
             class="br bb text-center align-middle"
             style="width: 20%">
-            <img src="{{LOGO_IMAGE_DATA_URI}}" alt="Logo" style="max-width:100%; height:auto;" /><br />
+            <img src="{{LOGO_IMAGE_DATA_URI}}" alt="Logo" style="max-width: 100%; height: auto;" /><br />
           </td>
-          <td colspan="2" class="bb align-middle" style="padding: 6px">
+          <td colspan="3" class="bb align-middle" style="padding: 6px">
             <div style="font-size: 16px" class="bold">OLGA CONCRETE BLOCKS</div>
           </td>
         </tr>
         <tr>
-          <td class="br bb align-top" style="width: 40%; padding: 4px">
+          <td rowspan="5" class="br bb align-top" style="width: 40%; padding: 4px">
             TC 54/3336, OPP Attukal New Bridge<br />
             Bund Road, Karamana P O, Thiruvananthapuram<br />
             695002<br />
@@ -148,32 +149,24 @@
             Email: vinod.olga@gmail.com<br />
             <span class="bold">State Code: Kerala: 32 </span>
           </td>
-          <td class="bb p-0 align-top" style="width: 40%">
-            <table style="width: 100%; height: 100%">
-              <tr>
-                <td class="br bb bold" style="width: 35%">Invoice No:</td>
-                <td class="bb">{{INVOICE_NO}}</td>
-              </tr>
-              <tr>
-                <td class="br bb bold">Date:</td>
-                <td class="bb">{{INVOICE_DATE}}</td>
-              </tr>
-              <tr>
-                <td class="br bb bold">GST No:</td>
-                <td class="bb">32AHVPP6059Q2Z9</td>
-              </tr>
-              <tr>
-                <td class="br bb bold">Place of Supply:</td>
-                <td class="bb">{{PLACE_OF_SUPPLY}}</td>
-              </tr>
-              <tr>
-                <td class="br bold" style="border-bottom: none">
-                  Invoice Category:
-                </td>
-                <td style="border-bottom: none">{{INVOICE_TYPE}}</td>
-              </tr>
-            </table>
-          </td>
+          <td class="br bb bold" style="width: 15%">Invoice No:</td>
+          <td class="bb" style="width: 25%">{{INVOICE_NO}}</td>
+        </tr>
+        <tr>
+          <td class="br bb bold">Date:</td>
+          <td class="bb">{{INVOICE_DATE}}</td>
+        </tr>
+        <tr>
+          <td class="br bb bold">GST No:</td>
+          <td class="bb">32AHVPP6059Q2Z9</td>
+        </tr>
+        <tr>
+          <td class="br bb bold">Place of Supply:</td>
+          <td class="bb">{{PLACE_OF_SUPPLY}}</td>
+        </tr>
+        <tr>
+          <td class="br bb bold">Invoice Category:</td>
+          <td class="bb">{{INVOICE_TYPE}}</td>
         </tr>
       </table>
 
@@ -196,31 +189,31 @@
         </tr>
       </table>
 
-      <!-- Items Table -->
+      <!-- Items Table (Headers and Body text-alignments strictly synchronized) -->
       <table class="items-table">
         <thead>
           <tr>
-            <th class="br bb" style="width: 5%">Sl No</th>
-            <th class="br bb text-left" style="width: 32%">Description</th>
-            <th class="br bb" style="width: 10%">HSN/SAC</th>
-            <th class="br bb" style="width: 7%">GST(%)</th>
-            <th class="br bb" style="width: 8%">Quantity</th>
-            <th class="br bb" style="width: 8%">Unit</th>
-            <th class="br bb" style="width: 10%">Rate</th>
-            <th class="br bb" style="width: 7%">Disc</th>
-            <th class="bb" style="width: 13%">Taxable Value</th>
+            <th class="br bb text-center" style="width: 5%">Sl No</th>
+            <th class="br bb text-left" style="width: 35%">Description</th>
+            <th class="br bb text-center" style="width: 10%">HSN/SAC</th>
+            <th class="br bb text-center" style="width: 7%">GST(%)</th>
+            <th class="br bb text-center" style="width: 7%">Quantity</th>
+            <th class="br bb text-center" style="width: 5%">Unit</th>
+            <th class="br bb text-center" style="width: 11%">Rate</th>
+            <th class="br bb text-center" style="width: 5%">Disc</th>
+            <th class="bb text-right" style="width: 15%">Taxable Value</th>
           </tr>
         </thead>
         <tbody>
           <!-- START DYNAMIC PRODUCT ROW LOOP IN REACT NATIVE -->
           <tr>
             <td class="br text-center align-top pt-2">{{ITEM_SL_NO}}</td>
-            <td class="br align-top pt-2">{{ITEM_DESCRIPTION}}</td>
+            <td class="br text-left align-top pt-2">{{ITEM_DESCRIPTION}}</td>
             <td class="br text-center align-top pt-2">{{ITEM_HSN}}</td>
             <td class="br text-center align-top pt-2">{{ITEM_GST_PCT}}</td>
             <td class="br text-center align-top pt-2">{{ITEM_QTY}}</td>
             <td class="br text-center align-top pt-2">{{ITEM_UNIT}}</td>
-            <td class="br text-right align-top pt-2">{{ITEM_RATE}}</td>
+            <td class="br text-center align-top pt-2">{{ITEM_RATE}}</td>
             <td class="br text-center align-top pt-2">{{ITEM_DISC}}</td>
             <td class="text-right align-top pt-2">{{ITEM_TAXABLE_VAL}}</td>
           </tr>
@@ -241,11 +234,11 @@
         </tbody>
       </table>
 
-      <!-- Bottom Grid (Bank, QR & Totals) -->
-      <table>
+      <!-- Bottom Grid (Bank, QR & Totals - Final column set to 17% to mirror the Items Table) -->
+      <table class="totals-table">
         <tr>
-          <td class="br bb bold" style="width: 15%">A/C Name</td>
-          <td class="br bb bold" style="width: 25%">{{BANK_AC_NAME}}</td>
+          <td class="br bb bold" style="width: 18%">A/C Name</td>
+          <td class="br bb bold" style="width: 27%">{{BANK_AC_NAME}}</td>
           <!-- QR Code spans 5 rows downwards -->
           <td
             rowspan="5"
@@ -268,8 +261,8 @@
                 style="max-width: 100%; max-height: 100%; display: {{QR_DISPLAY_TOGGLE}};" />
             </div>
           </td>
-          <td class="br bb text-right bold" style="width: 20%">Total</td>
-          <td class="bb text-right" style="width: 20%">
+          <td class="br bb text-right bold" style="width: 18%">Total</td>
+          <td class="bb text-right" style="width: 17%">
             {{TOTAL_TAXABLE_VALUE}}
           </td>
         </tr>
